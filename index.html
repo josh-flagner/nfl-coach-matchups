@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Sortable overall NFL head coach records with opponent-by-opponent breakdowns since 1966.">
+  <title>NFL Coach Matchups</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand-mark" aria-hidden="true">HC</div>
+    <div>
+      <h1>NFL Coach Matchups</h1>
+      <p id="coverage">Overall head-coaching records with opponent breakdowns</p>
+    </div>
+  </header>
+
+  <main>
+    <section class="controls" aria-label="Matchup filters">
+      <div class="filter search-wrap">
+        <label for="search">Coach or team coached</label>
+        <input id="search" type="search" placeholder="Try Andy Reid or Kansas City" autocomplete="off">
+      </div>
+      <fieldset class="filter range-filter">
+        <legend>Winning percentage</legend>
+        <div class="range-row">
+          <label>Min <input id="pct-min" type="number" min="0" max="100" step="1" placeholder="All" inputmode="numeric"><span>%</span></label>
+          <span class="range-dash">to</span>
+          <label>Max <input id="pct-max" type="number" min="0" max="100" step="1" placeholder="All" inputmode="numeric"><span>%</span></label>
+        </div>
+      </fieldset>
+      <fieldset class="filter range-filter">
+        <legend>Games played</legend>
+        <div class="range-row">
+          <label>Min <input id="games-min" type="number" min="1" step="1" placeholder="All" inputmode="numeric"></label>
+          <span class="range-dash">to</span>
+          <label>Max <input id="games-max" type="number" min="1" step="1" placeholder="All" inputmode="numeric"></label>
+        </div>
+      </fieldset>
+      <div class="filter">
+        <label for="week-min">Minimum week (playoffs come after)</label>
+        <input id="week-min" type="number" min="1" max="18" step="1" placeholder="All weeks" inputmode="numeric">
+      </div>
+      <div class="filter">
+        <label for="opponent-record">Opponent record entering game</label>
+        <select id="opponent-record">
+          <option value="all">All records</option><option value="above">Above .500</option>
+          <option value="atleast">.500 or better</option><option value="below">Below .500</option>
+          <option value="atmost">.500 or worse</option><option value="even">Exactly .500</option>
+        </select>
+      </div>
+      <div class="filter">
+        <label for="playoffs">Playoffs</label>
+        <select id="playoffs"><option value="include">Include playoffs</option><option value="exclude">Regular season only</option><option value="only">Playoffs only</option></select>
+      </div>
+      <button id="reset" class="reset" type="button">Reset filters</button>
+    </section>
+
+    <section class="summary" aria-live="polite">
+      <div><strong id="result-count">—</strong><span>coaches</span></div>
+      <p>Click any column heading to sort. Click a row for the game log.</p>
+    </section>
+
+    <section class="table-shell" aria-label="Coach records against opponents">
+      <div class="table-scroll">
+        <table>
+          <thead>
+            <tr>
+              <th><button data-sort="coach">Coach <span aria-hidden="true"></span></button></th>
+              <th><button data-sort="teamSearch">Teams coached <span aria-hidden="true"></span></button></th>
+              <th class="num"><button data-sort="gamesPlayed">GP <span aria-hidden="true"></span></button></th>
+              <th class="num"><button data-sort="wins">W <span aria-hidden="true"></span></button></th>
+              <th class="num"><button data-sort="losses">L <span aria-hidden="true"></span></button></th>
+              <th class="num"><button data-sort="ties">T <span aria-hidden="true"></span></button></th>
+              <th class="num"><button data-sort="winPct">Win % <span aria-hidden="true"></span></button></th>
+            </tr>
+          </thead>
+          <tbody id="records"></tbody>
+        </table>
+      </div>
+      <div id="empty" class="empty" hidden>No matchups fit those filters.</div>
+    </section>
+    <footer><span id="source-note"></span> Data: <a href="https://github.com/nflverse/nfldata" target="_blank" rel="noreferrer">nflverse</a> and <a href="https://github.com/spatto12/NFLCoaches" target="_blank" rel="noreferrer">NFLCoaches</a>.</footer>
+  </main>
+
+  <dialog id="details">
+    <div class="dialog-head">
+      <div><p class="eyebrow">GAME LOG</p><h2 id="detail-title"></h2><p id="detail-record"></p></div>
+      <button id="close-dialog" class="close" aria-label="Close game log">×</button>
+    </div>
+    <div class="dialog-scroll">
+      <table class="game-log">
+        <thead><tr><th>Opponent</th><th>GP</th><th>W–L–T</th><th>Win %</th></tr></thead>
+        <tbody id="game-log"></tbody>
+      </table>
+    </div>
+  </dialog>
+  <script src="app.js" defer></script>
+</body>
+</html>
